@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <title>Просмотр статьи</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'article.css' %}">
+</head>
+<body>
+
+<div class="main">
+    <a href="{% url 'blog:list' %}">Назад к списку</a>
+    <div>
+        <h3>Заголовок: {{ article.title }}</h3>
+        <strong>Автор: {{ article.author }}</strong>
+        <p>{{ article.content }}</p>
+    </div>
+    <div>
+        <ul>
+            {% for comment in comments %}
+                <li>{{ comment.author }}</li>
+                <strong>{{ comment.post_date }}</strong>
+                <p>{{ comment.comment_text }}</p>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <form action="{% url 'blog:view' article_id=article.id %}" method="post">
+            {% csrf_token %}
+            <input name="author" placeholder="Имя автора" required><br>
+            <textarea name="comment_text" placeholder="Текст комментвария"></textarea><br>
+            <button type="submit">Оставить комментарий</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
